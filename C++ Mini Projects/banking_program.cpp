@@ -1,93 +1,89 @@
-#include <iostream>  // For input and output functionality
-#include <iomanip>   // For manipulating input and output formats
+#include <iostream>
+#include <iomanip>
 
-// Function declarations
-void ShowBalance(double balance);             // Shows current account balance
-double Deposit();                             // Allows user to deposit money
-double Withdraw(double balance);              // Allows user to withdraw money
-
+// Function prototypes
+void displayCurrentBalance(double balance); // Shows the users current accoutn balance 
+double addFunds();  // will allow the users to deposit money                       
+double takeOutFunds(double balance); // Allows users to withdraw their money      
 
 int main() {
-    double balance = 0;  // Initialize balance to 0
-    int choice = 0;     // Variable to store user choice in the menu
+    double currentBalance = 0.0; // initialize balance to 0 
+    int userSelection = 0; // variable to store user choice in the menu 
 
-    // Loop until user chooses to exit
+    // Main application loop , Displays meny to user
     do {
-        // Display menu to user
-        std::cout << "\n******************\n";
-        std::cout << "Enter your choice:\n";
-        std::cout << "********************\n";
-        std::cout << "1.Show Balance\n";
-        std::cout << "2.Deposit Money\n";
-        std::cout << "3.Withdraw Money\n";
-        std::cout << "4.Exit\n";
-        std::cin >> choice;
+        std::cout << "\n==== Bank Menu ====\n";
+        std::cout << "1. Display Balance\n";
+        std::cout << "2. Add Funds\n";
+        std::cout << "3. Take Out Funds\n";
+        std::cout << "4. Exit\n";
+        std::cout << "===================\n";
+        std::cout << "Choose an option: ";
+        std::cin >> userSelection;
 
-        // Clear any errors and flush input stream
         std::cin.clear();
-        fflush(stdin);
+        fflush(stdin);  
 
-        // Process user choice
-        switch (choice) {
+        //User choice process
+        switch (userSelection) {
             case 1:
-                ShowBalance(balance);
+                displayCurrentBalance(currentBalance);
                 break;
             case 2:
-                balance += Deposit();
-                ShowBalance(balance);
+                currentBalance += addFunds();
+                displayCurrentBalance(currentBalance);
                 break;
             case 3:
-                balance -= Withdraw(balance);
-                ShowBalance(balance);
+                currentBalance -= takeOutFunds(currentBalance);
+                displayCurrentBalance(currentBalance);
                 break;
             case 4:
-                std::cout << "Thanks for visiting!!\n";
+                std::cout << "Thank you for visiting\n";
                 break;
             default:
-                std::cout << "Invalid Choice!\n";
+                std::cout << "Invalid selection, try again.\n";
         }
-    } while (choice != 4);  // End loop when user chooses option 4 (Exit)
+    } while (userSelection != 4);  // will end the loop when user chooses 4 (exit)
     
     return 0;
 }
 
-// Function definitions
 
 // Displays the current balance with 2 decimal places
-void ShowBalance(double balance) {
-    std::cout << "Your balance is:£ " << std::setprecision(2) << std::fixed << balance << std::endl;
+void displayCurrentBalance(double balance) {
+    std::cout << "Available balance: £" << std::setprecision(2) << std::fixed << balance << std::endl;
 }
 
 // Prompts user for deposit amount and returns it
-double Deposit() {
-    double amount = 0;
-    std::cout << "Enter amount to be deposited: ";
-    std::cin >> amount;
+double addFunds() {
+    double deposit = 0.0;
+    std::cout << "Input funds to add: ";
+    std::cin >> deposit;
 
-    if (amount > 0) {
-        return amount;
+    if (deposit > 0) {
+        return deposit;
     } 
     else {
-        std::cout << "That is not a valid amount:\n ";
-        return 0;
+        std::cout << "Please enter a valid amount.\n";
+        return 0.0;
     }
 }
 
 // Prompts user for withdrawal amount, checks for validity, and returns it
-double Withdraw(double balance) {
-    double amount = 0;
-    std::cout << "Enter amount to be withdrawn:\n";
-    std::cin >> amount;
+double takeOutFunds(double balance) {
+    double withdrawal = 0.0;
+    std::cout << "Input funds to withdraw: ";
+    std::cin >> withdrawal;
 
-    if (amount > balance) {
-        std::cout << "Insufficient funds\n";
-        return 0;
+    if (withdrawal > balance) {
+        std::cout << "Oops! You don't have enough funds.\n";
+        return 0.0;
     } 
-    else if (amount < 0) {
-        std::cout << "That's not a valid amount \n ";
-        return 0;
+    else if (withdrawal < 0) {
+        std::cout << "Please enter a valid amount.\n";
+        return 0.0;
     } 
     else {
-        return amount;
+        return withdrawal;
     }
 }

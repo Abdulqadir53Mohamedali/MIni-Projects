@@ -52,9 +52,9 @@ int main() {
     }
 
     // Display user's result
-    std::cout << "*************************************\n";
+    std::cout << "=====================================\n";
     std::cout << "*              Results               *\n";
-    std::cout << "*************************************\n";
+    std::cout << "=====================================\n";
     std::cout << "CORRECT GUESSES: " << score << '\n';
     std::cout << "# OF QUESTIONS: " << size << '\n';
     std::cout << "SCORE: " << (score / (double)size) * 100 << "%";  // Calculate the percentage score

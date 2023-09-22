@@ -1,53 +1,55 @@
-#include <iostream>  // For input and output functionality
-#include <ctime>     // For time-based random seeding
+#include <iostream>
+#include <chrono>
+#include <random>
 
-// Note: With functions, if you declare it above the main function,
-// you can actually define the function after the main function.
+// Function to execute the number guessing game
+void startGuessingGame() {
+    // Set up modern random number generation instaed of the old version which is ran()
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count()); 
+    std::uniform_int_distribution<int> numberDist(1, 100);
 
-// This function contains the game logic for a number guessing game.
-void game() {
-    srand(time(NULL));  // Seed the random generator with the current time
+    std::cout << "~~~ Welcome to the Mystic Number Challenge ~~~\n";
 
-    // Infinite loop to continuously play the game until the user decides to exit
+    //  A Infinite loop to keep the game running until the user wants to exit
     while(true) {
-        int num = (rand() % 100) + 1;   // Generate a random number between 1 and 100 inclusive
-        int guess;
+        int secretNumber = numberDist(rng); // generates the random number 1-100
+        int userGuess;
+        int remainingTries = 3;
 
-        std::cout << "****NUMBER GUESSING GAME**** \n";
-        std::cout << "You only have three guesses then the number will change\n";
+        std::cout << "\nThe Mystic Number lies between 1 and 100...\n";
+        std::cout << "You have " << remainingTries << " attempts to unveil its secret!\n";
 
-        // Loop to provide the user with three chances to guess the correct number
-        for(int index = 0; index < 3; index++) {
-            std::cout << "Please enter your guess:";
-            std::cin >> guess;
+        while(remainingTries > 0) {
+            std::cout << "\nYour guess: ";
+            std::cin >> userGuess; // stores users guess
 
-            // Check if the guess is correct
-            if(guess == num) {
-                std::cout << "Congratulations! You guessed the number!\n";
-                std::cout << "=============\n";
-
-                char choice;
-
-                // Ask the user if they want to play again
-                std::cout << "Do you wish to play again? [Y/N]\n";
-                std::cin >> choice;
-
-                if(choice == 'Y' || choice == 'y') {
-                    break;  // Break out of the for loop to generate a new number and play again
+            if(userGuess == secretNumber) {
+                std::cout << "\nBravo! You've uncovered the Mystic Number!\n";
+                break;
+            } 
+            else {
+                remainingTries--; // decreases the remaining tries by 1
+                if(remainingTries > 0) {
+                    std::cout << "Nope! " << remainingTries << " tries left.\n";
                 } 
-                else if (choice == 'N' || choice == 'n') {
-                    exit(0);  // Exit the program if the user chooses not to play again
+                else {
+                    std::cout << "The Mystic Number eludes you! It was: " << secretNumber << ".\n";
                 }
-            }   else {
-                    std::cout << "Incorrect, Please try again\n";
-                    std::cout << "==========================\n";
             }
+        }
+
+        char replayChoice;
+        std::cout << "\nDare to challenge the Mystic Number again? [Y/N]: "; // Gives user the choice to exit or play again
+        std::cin >> replayChoice;
+
+        if(replayChoice == 'N' || replayChoice == 'n') {
+            std::cout << "Farewell, and thank you for playing!";
+            exit(0); // This will exit the program if the user does not wish to play again
         }
     }
 }
 
-// Main function that starts the game
 int main() {
-    game();  // Call the game function to start the game
-    return 0;  // End of program
+    startGuessingGame();  // Invoke the guessing game function
+    return 0;             // End of the program
 }
